@@ -1,5 +1,6 @@
 $id: http://substrait.io/schemas/simple_extensions
 $schema: https://json-schema.org/draft/2020-12/schema
+title: Simple Extensions
 additionalProperties: false
 type: object
 properties:
@@ -13,9 +14,11 @@ properties:
         name:
           type: string
         structure:
-          type: object
-          additionalProperties:
-            $ref: "#/$defs/type"
+          oneOf:
+            - type: string  # any data type
+            - type: object  # syntactic sugar for a non-nullable named struct
+              additionalProperties:
+                $ref: "#/$defs/type"
         parameters:  # parameter list for compound types
           $ref: "#/$defs/type_param_defs"
         variadic:  # when set, last parameter may be specified one or more times
@@ -101,8 +104,6 @@ $defs:
               type: array
               items:
                 type: string
-            required:
-              type: boolean
         - type: object # value
           required: [ value ]
           properties:
@@ -112,6 +113,8 @@ $defs:
               type: string
             value:
               $ref: "#/$defs/type"
+            constant:
+              type: boolean
         - type: object # type
           required: [ type ]
           properties:
@@ -121,6 +124,19 @@ $defs:
               type: string
             type:
               type: string
+  options:  # a map of options
+    type: object
+    additionalProperties:
+      type: object # option
+      additionalProperties: false
+      required: [ values ]
+      properties:
+        description:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
   variadicBehavior:
     type: object
     additionalProperties: false
@@ -173,6 +189,8 @@ $defs:
           properties:
             args:
               $ref: "#/$defs/arguments"
+            options:
+              $ref: "#/$defs/options"
             variadic:
               $ref: "#/$defs/variadicBehavior"
             sessionDependent:
@@ -204,6 +222,8 @@ $defs:
           properties:
             args:
               $ref: "#/$defs/arguments"
+            options:
+              $ref: "#/$defs/options"
             variadic:
               $ref: "#/$defs/variadicBehavior"
             sessionDependent:
@@ -244,6 +264,8 @@ $defs:
           properties:
             args:
               $ref: "#/$defs/arguments"
+            options:
+              $ref: "#/$defs/options"
             variadic:
               $ref: "#/$defs/variadicBehavior"
             sessionDependent:
