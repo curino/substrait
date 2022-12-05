@@ -33,4 +33,4 @@ Want to learn more about Substrait? Try the following presentations and slide de
 
 ## Contribution
 
-All contributors are welcome to Substrait..
+All contributors are welcome to Substrait.
