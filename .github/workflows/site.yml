@@ -34,7 +34,7 @@ jobs:
             ${{ runner.os }}-pip-
       - name: Install dependencies
         run: python3 -m pip install -r ./site/requirements.txt
-      - name: Generate Collaborators
+      - name: Generate Collaborators from repo
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
           curl $(gh api -H "Accept: application/vnd.github+json" /repos/curino/substrait/collaborators --jq ".[].url") --silent  | jq -r '"- Name: \(.name)\n  Association: \(.company)"' > collaborators2.yaml
