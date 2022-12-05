@@ -38,7 +38,8 @@ jobs:
         run: |
           curl $(gh api -H "Accept: application/vnd.github+json" /repos/curino/substrait/collaborators --jq ".[].url") --silent  | jq -r '"- Name: \(.name)\n  Association: \(.company)"' > collaborators2.yaml
         working-directory: ./site/data
-        env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Generate Static Site
         run: mkdocs build
         working-directory: ./site
